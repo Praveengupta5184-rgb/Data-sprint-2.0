@@ -11,6 +11,7 @@
 __pycache__/
 *.pt
 *.pkl
+*.cache
 /weights/
 /baseline_work/runs/
 /improvement_v4/runs/
