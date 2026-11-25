@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ROADVISION AI — Intelligent Road Damage Detection System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <!-- Sticky Header -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="#home" class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M4 20L9 4H15L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M12 7V10M12 13V17" stroke="#00D4FF" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">ROADVISION AI</div>
+          <div class="brand-sub">AI-Powered Road Damage Detection</div>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#detect">Detect Damage</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#about">About Model</a>
+      </nav>
+
+      <div class="status-pill" id="modelStatusPill" title="Live backend model health">
+        <span class="status-dot checking" id="statusDot"></span>
+        <span id="statusText">AI MODEL STATUS: CHECKING...</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="badge">Anveshan DataSprint 2.0 • Computer Vision Track</div>
+          <h1>ROADVISION AI<br /><span class="gradient-text">Intelligent Road Damage Detection System</span></h1>
+          <p class="hero-desc">
+            Automated pavement distress detection powered by <strong>YOLOv8n</strong>,
+            <strong>3-View Test-Time Augmentation</strong>, and <strong>Weighted Boxes Fusion</strong>.
+            Upload a road image or test with curated validation samples to detect cracks and potholes in real time.
+          </p>
+          <div class="hero-actions">
+            <a href="#detect" class="btn btn-primary">Launch Damage Detector</a>
+            <a href="#samples" class="btn btn-secondary">Try Sample Images</a>
+          </div>
+          <div class="hero-specs">
+            <div class="spec-chip"><span>Architecture</span><strong>YOLOv8n</strong></div>
+            <div class="spec-chip"><span>Inference</span><strong>3-View TTA</strong></div>
+            <div class="spec-chip"><span>Fusion</span><strong>WBF (IoU 0.45)</strong></div>
+            <div class="spec-chip"><span>Val Score</span><strong>43.53 / 100</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Upload & Detection Section -->
+    <section id="detect" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>Road Surface Damage Detection</h2>
+            <p>Upload a smartphone or dashcam road photo (JPG, JPEG, PNG — max 10 MB) to run the 3-view TTA + WBF pipeline.</p>
+          </div>
+        </div>
+
+        <div class="upload-panel card">
+          <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload road image">
+            <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,image/jpeg,image/png" hidden />
+            <div class="dropzone-empty" id="dropzoneEmpty">
+              <div class="upload-icon" aria-hidden="true">
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 16V4M12 4L7 9M12 4L17 9" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M4 16V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V16" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <h3>Drag &amp; drop your road image here</h3>
+              <p>or <span class="browse-link">browse files</span> from your device</p>
+              <span class="file-hint">Supported formats: JPG, JPEG, PNG • Max 10 MB</span>
+            </div>
+
+            <div class="dropzone-preview hidden" id="dropzonePreview">
+              <img id="previewImg" alt="Uploaded road preview" />
+              <div class="preview-meta">
+                <div id="previewFileName" class="preview-name"></div>
+                <div id="previewFileSize" class="preview-size"></div>
+                <div class="preview-actions">
+                  <button type="button" class="btn btn-sm btn-secondary" id="changeImgBtn">Upload Another</button>
+                  <button type="button" class="btn btn-sm btn-danger" id="removeImgBtn">Remove Image</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="controls-bar">
+            <div class="threshold-control">
+              <div class="threshold-label">
+                <label for="confSlider">Confidence Threshold:</label>
+                <span class="mono" id="confValue">0.237 (F1-Optimal)</span>
+              </div>
+              <input type="range" id="confSlider" min="0.05" max="0.85" step="0.01" value="0.237" />
+              <div class="threshold-presets">
+                <button type="button" class="preset-btn active" data-conf="0.237">F1-Optimal (0.237)</button>
+                <button type="button" class="preset-btn" data-conf="0.15">High Recall (0.15)</button>
+                <button type="button" class="preset-btn" data-conf="0.40">High Precision (0.40)</button>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-analyze" id="analyzeBtn" disabled>
+              ANALYZE ROAD IMAGE
+            </button>
+          </div>
+
+          <!-- Error Banner -->
+          <div class="alert-error hidden" id="errorBanner" role="alert"></div>
+
+          <!-- Loading Overlay -->
+          <div class="loading-panel hidden" id="loadingPanel">
+            <div class="spinner"></div>
+            <div class="loading-status" id="loadingStatus">Analyzing road surface...</div>
+            <div class="loading-steps">
+              <span class="lstep active" data-step="0">1. Analyzing road surface</span>
+              <span class="lstep" data-step="1">2. Running multi-view detection</span>
+              <span class="lstep" data-step="2">3. Combining predictions (WBF)</span>
+              <span class="lstep" data-step="3">4. Preparing final results</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Dashboard (shown after inference) -->
+        <div class="results-dashboard hidden" id="resultsDashboard">
+          <!-- 4 Metric Cards -->
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <span class="metric-label">TOTAL DAMAGE DETECTED</span>
+              <span class="metric-value mono" id="metricTotal">0</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">DAMAGE CLASSES FOUND</span>
+              <span class="metric-value mono" id="metricClasses">0</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">INFERENCE TIME</span>
+              <span class="metric-value mono" id="metricLatency">0 ms</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">MODEL USED</span>
+              <span class="metric-value model-val" id="metricModel">YOLOv8n + TTA + WBF</span>
+            </div>
+          </div>
+
+          <!-- Image Viewer + Analytics Grid -->
+          <div class="results-main-grid">
+            <!-- Viewer Card -->
+            <div class="card viewer-card">
+              <div class="viewer-toolbar">
+                <div class="view-tabs" role="tablist">
+                  <button type="button" class="tab-btn active" id="tabResult">Detection Result</button>
+                  <button type="button" class="tab-btn" id="tabOriginal">Original Image</button>
+                </div>
+                <button type="button" class="btn btn-sm btn-primary" id="downloadBtn">
+                  DOWNLOAD ANNOTATED IMAGE
+                </button>
+              </div>
+
+              <div class="image-stage">
+                <img id="resultImg" alt="Road damage detection result" />
+              </div>
+
+              <div class="legend-bar">
+                <span class="legend-title">Class &amp; Confidence Legend:</span>
+                <span class="legend-item"><i class="dot" style="background:#00D4FF"></i>D00 Longitudinal</span>
+                <span class="legend-item"><i class="dot" style="background:#FF8C42"></i>D10 Transverse</span>
+                <span class="legend-item"><i class="dot" style="background:#10B981"></i>D20 Alligator</span>
+                <span class="legend-item"><i class="dot" style="background:#F43F5E"></i>D40 Pothole</span>
+              </div>
+            </div>
+
+            <!-- Analytics Card -->
+            <div class="card analytics-card">
+              <h3>Damage Distribution</h3>
+              <p class="muted-text">Detected objects grouped by damage category</p>
+              <div class="dist-bars" id="distBars"></div>
+
+              <div class="analytics-summary">
+                <div class="asum-item">
+                  <span>Total Objects</span>
+                  <strong class="mono" id="anaTotal">0</strong>
+                </div>
+                <div class="asum-item">
+                  <span>Unique Classes</span>
+                  <strong class="mono" id="anaUnique">0</strong>
+                </div>
+                <div class="asum-item">
+                  <span>Avg Confidence</span>
+                  <strong class="mono" id="anaAvgConf">0%</strong>
+                </div>
+                <div class="asum-item">
+                  <span>Inference Time</span>
+                  <strong class="mono" id="anaTime">0 ms</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detections Table -->
+          <div class="card table-card">
+            <div class="table-header">
+              <h3>Detection Results Table</h3>
+              <span class="muted-text mono" id="tableCountNote"></span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Class</th>
+                    <th>Damage Type</th>
+                    <th>Confidence</th>
+                    <th>Bounding Box (x₁, y₁, x₂, y₂)</th>
+                  </tr>
+                </thead>
+                <tbody id="detectionsTbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sample Demonstration Images -->
+    <section id="samples" class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>TRY ROADVISION AI</h2>
+            <p>Click any curated validation road image (RDD2020) to run the live 3-view TTA + WBF inference pipeline.</p>
+          </div>
+        </div>
+        <div class="samples-grid" id="samplesGrid"></div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>How It Works</h2>
+            <p>Verified multi-view Test-Time Augmentation and Weighted Boxes Fusion pipeline</p>
+          </div>
+        </div>
+
+        <div class="pipeline-flow">
+          <div class="pipe-step">
+            <span class="pipe-num">01</span>
+            <h4>Input Image</h4>
+            <p>Uploaded RGB road photo</p>
+          </div>
+          <div class="pipe-arrow" aria-hidden="true">→</div>
+          <div class="pipe-step">
+            <span class="pipe-num">02</span>
+            <h4>3-View TTA</h4>
+            <p>Original (640), H-Flip (640), 1.2× Scale (768)</p>
+          </div>
+          <div class="pipe-arrow" aria-hidden="true">→</div>
+          <div class="pipe-step">
+            <span class="pipe-num">03</span>
+            <h4>YOLOv8n Inference</h4>
+            <p>Predict boxes across all 3 views</p>
+          </div>
+          <div class="pipe-arrow" aria-hidden="true">→</div>
+          <div class="pipe-step">
+            <span class="pipe-num">04</span>
+            <h4>Coord Transform</h4>
+            <p>Invert flip &amp; rescale boxes to original</p>
+          </div>
+          <div class="pipe-arrow" aria-hidden="true">→</div>
+          <div class="pipe-step">
+            <span class="pipe-num">05</span>
+            <h4>WBF Fusion</h4>
+            <p>IoU 0.45 clustering, max score, weighted box avg</p>
+          </div>
+          <div class="pipe-arrow" aria-hidden="true">→</div>
+          <div class="pipe-step highlight">
+            <span class="pipe-num">06</span>
+            <h4>Final Detection</h4>
+            <p>Crisper boxes &amp; classes</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Model -->
+    <section id="about" class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>About the Model</h2>
+            <p>Technical specifications, damage taxonomy, and official validation set performance</p>
+          </div>
+        </div>
+
+        <div class="about-grid">
+          <div class="card">
+            <h3>Model &amp; Inference Configuration</h3>
+            <div class="kv-list">
+              <div class="kv-row"><span>Architecture</span><strong>YOLOv8n</strong></div>
+              <div class="kv-row"><span>Parameters</span><strong>3.0M</strong></div>
+              <div class="kv-row"><span>Compute</span><strong>8.1 GFLOPs</strong></div>
+              <div class="kv-row"><span>Input Resolution</span><strong>640 × 640</strong></div>
+              <div class="kv-row"><span>Pretraining</span><strong>COCO</strong></div>
+              <div class="kv-row"><span>Inference Strategy</span><strong>3-view TTA (640, Flip, 768)</strong></div>
+              <div class="kv-row"><span>Post-processing</span><strong>Weighted Boxes Fusion (max)</strong></div>
+              <div class="kv-row"><span>WBF IoU Threshold</span><strong>0.45</strong></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Official Validation Set Metrics</h3>
+            <p class="val-disclaimer">
+              Evaluated on all 2,150 official validation images using <code>score.py</code>.
+              These are local validation results, not Kaggle leaderboard results.
+            </p>
+            <div class="val-metrics-grid">
+              <div class="val-box primary">
+                <span>Validation Score</span>
+                <strong class="mono">43.53 / 100</strong>
+              </div>
+              <div class="val-box">
+                <span>mAP@50</span>
+                <strong class="mono">0.5230</strong>
+              </div>
+              <div class="val-box">
+                <span>mAP@50:95</span>
+                <strong class="mono">0.2156</strong>
+              </div>
+              <div class="val-box">
+                <span>Precision</span>
+                <strong class="mono">0.5427</strong>
+              </div>
+              <div class="val-box">
+                <span>Recall</span>
+                <strong class="mono">0.5185</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="classes-grid">
+          <div class="class-card" style="--accent:#00D4FF">
+            <span class="class-tag">D00</span>
+            <h4>Longitudinal Crack</h4>
+            <p>Linear cracks running parallel to the direction of traffic along the road lane.</p>
+          </div>
+          <div class="class-card" style="--accent:#FF8C42">
+            <span class="class-tag">D10</span>
+            <h4>Transverse Crack</h4>
+            <p>Cracks extending laterally across the pavement width, perpendicular to traffic.</p>
+          </div>
+          <div class="class-card" style="--accent:#10B981">
+            <span class="class-tag">D20</span>
+            <h4>Alligator Crack</h4>
+            <p>Interconnected fatigue crack networks forming polygon patterns on asphalt.</p>
+          </div>
+          <div class="class-card" style="--accent:#F43F5E">
+            <span class="class-tag">D40</span>
+            <h4>Pothole</h4>
+            <p>Bowl-shaped structural depressions and cavities in the road surface.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>ROADVISION AI • Anveshan DataSprint 2.0 (Computer Vision Track)</span>
+      <span>Sample images from RDD2020 (CC BY-NC 3.0) • Model: YOLOv8n + 3-View TTA + WBF</span>
+    </div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

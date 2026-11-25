@@ -10,8 +10,10 @@
 # Generated machine-learning artifacts (reproducible locally)
 __pycache__/
 *.pt
+!roadvision-webapp/weights/extended_best.pt
 *.pkl
 *.cache
+~$*
 /weights/
 /baseline_work/runs/
 /improvement_v4/runs/
