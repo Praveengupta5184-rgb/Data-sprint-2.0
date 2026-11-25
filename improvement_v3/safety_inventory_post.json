@@ -1,0 +1,122 @@
+{
+  "weights\\extended_best.pt": {
+    "size": 6505898,
+    "sha256": "abe9eaf5a37a4913956ac6ef51b5e3f946bdb6495f824511c3d9364c97e860fb"
+  },
+  "weights\\best.pt": {
+    "size": 6502442,
+    "sha256": "cf5b262a8ac8f037fcc9def3ea432960efc4fa939c480f1a81e919c8952d3b04"
+  },
+  "inference.py": {
+    "size": 2075,
+    "sha256": "cd7acaca06fba3c0b446f90811188438a3a4d163ff27a46ca51fedd4f0a71c68"
+  },
+  "score.py": {
+    "size": 19327,
+    "sha256": "a6aab5f45defbee74c37a0680d23729a2aeb404c47a64cafa07f2011f68a1cd2"
+  },
+  "benchmark_speed.py": {
+    "size": 9073,
+    "sha256": "eb920fb26602102f050547e5b474d0ff80d1b96895b8d72abbca25741cbb4391"
+  },
+  "check_submission.py": {
+    "size": 3399,
+    "sha256": "b2d0f5e047d2880d7ef3b868c9ba3f0996ff2eef76ffc54a8495c8868f6c3f13"
+  },
+  "make_kaggle_submission.py": {
+    "size": 2133,
+    "sha256": "29f1fca0d6c2cab65ca4bad1635fea0311bca2f0aff5c9d57194e0fb6f8cf098"
+  },
+  "train_baseline.py": {
+    "size": 3471,
+    "sha256": "3686f81af1c2b5813a14389ac441db6de9aa7702d14dab69fecc468f1647464f"
+  },
+  "benchmark_extended.py": {
+    "size": 4070,
+    "sha256": "faeb750236d10210d0171978e1590fd2f848aff7bc67ac764905ee193dda7cee"
+  },
+  "evaluate_extended.py": {
+    "size": 3318,
+    "sha256": "970ed90af5bb357fd22df562e1441ee3a906f39539024ef6f787c046218c1956"
+  },
+  "evaluate_compare.py": {
+    "size": 8042,
+    "sha256": "490fec606b68f6be7a5089c683928bddbce74f715901d60d3a078ad144cc80b6"
+  },
+  "make_kaggle_submission_extended.py": {
+    "size": 2655,
+    "sha256": "040ca52bee71b28c92319e5df1eae2c32c42494f2ef58c5902c5e3be413d764a"
+  },
+  "make_submission_iou05.py": {
+    "size": 2236,
+    "sha256": "0eb82ef8863db685419b9350ff1ed3518ea694e229a9511bce4d549dcfd98a9a"
+  },
+  "classwise_optimize.py": {
+    "size": 10672,
+    "sha256": "1e30df3047c0696d921ebc3a0ef6e654e5989b7b286de1c76fde21834380d43c"
+  },
+  "optimize_predictions.py": {
+    "size": 6320,
+    "sha256": "122029bc89df3d0cd677f7b55b72aba9c4f490f06f842b6d277ecde8af19490d"
+  },
+  "train_extended.py": {
+    "size": 3152,
+    "sha256": "77f04ec3ec44f4ef7710883a71d64ed5fefc9e136237c247071181318a147cf3"
+  },
+  "train_exp1_finetune.py": {
+    "size": 3263,
+    "sha256": "b416132ed41e15259543e03ee6c6c5c1c5e4fcbb6b8533ac1e92242eb3ced31a"
+  },
+  "train_exp3_v8s_pilot.py": {
+    "size": 3584,
+    "sha256": "ca6edc83f0e18b8af6773c647895e18f14a17410bc64aba27dfcdcdc852fd2b4"
+  },
+  "submission.csv": {
+    "size": 5203394,
+    "sha256": "75df0a0135ea03bcbc2a087d44ea27e7df24ab423c5cf76c8237d868366a6cf3"
+  },
+  "submission_extended.csv": {
+    "size": 5203394,
+    "sha256": "75df0a0135ea03bcbc2a087d44ea27e7df24ab423c5cf76c8237d868366a6cf3"
+  },
+  "submission_iou05.csv": {
+    "size": 3859686,
+    "sha256": "90b1a9b4f5ee50e6eb99608ffa77e2fe50f98fef652ad5320d395e346c12c0f3"
+  },
+  "speed_baseline_submission.csv": {
+    "size": 5970384,
+    "sha256": "1ed8bb7c405e0b916cc56080f4439fba3ac655e5ed231c40db8b8cd1bea526c1"
+  },
+  "speed_extended_submission.csv": {
+    "size": 3890165,
+    "sha256": "d5dfeffdc3c577a696169fd74a85b74896047d52480ce1fa6f1bb6711d39187d"
+  },
+  "tta_experiment\\submission_tta.csv": {
+    "size": 5128472,
+    "sha256": "898932e7dda942ebab3fd2ecedaa4dce1cac3f54d22624d532e7865c0650327c"
+  },
+  "tta_optimization_v2\\submission_wbf_optimized.csv": {
+    "size": 4335948,
+    "sha256": "05100b46d5135b327d74d04abf8fb43cae8eb3e2801d1c8a8194ee7973ab2d66"
+  },
+  "tta_experiment\\TTA_EXPERIMENT_REPORT.md": {
+    "size": 2893,
+    "sha256": "f05269763f2b8a532611612b1852a0ba114803c0bc5bac35bb6eeeb384e605a7"
+  },
+  "tta_experiment\\score_tta.json": {
+    "size": 1112,
+    "sha256": "e6516f5433ae84cffdbcd27db9db2c6e28ae808a76178b5bb1fb6e54f9af94e9"
+  },
+  "tta_experiment\\tta_comparison_report.json": {
+    "size": 507,
+    "sha256": "f6c85f9fcb43d9b410d3592e49bbfe3c435ef9e84d86845845b372528b50eac5"
+  },
+  "tta_optimization_v2\\EXPERIMENT_REPORT_V2.md": {
+    "size": 9285,
+    "sha256": "c6fe413f2328842d42df9df6fa04ddf4a59161aa64f8f02193ad47ff3a4b28cb"
+  },
+  "tta_optimization_v2\\comprehensive_comparison.json": {
+    "size": 13799,
+    "sha256": "f0b31e3e46d34703433760af08d7a4aceda9ebe14b9ad09f50e42440207b9e0e"
+  }
+}

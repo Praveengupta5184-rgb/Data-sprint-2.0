@@ -1,0 +1,22 @@
+# Image datasets (keep local; do not commit to GitHub)
+/test_images/
+/train_images/
+/val_images/
+/baseline_work/yolo_data/images/train/
+/baseline_work/yolo_data/images/val/
+/baseline_work/yolo_data/labels/train/
+/baseline_work/yolo_data/labels/val/
+
+# Generated machine-learning artifacts (reproducible locally)
+__pycache__/
+*.pt
+*.pkl
+/weights/
+/baseline_work/runs/
+/improvement_v4/runs/
+/classopt_results/
+/eval_results/
+/opt_results/
+/tta_experiment/
+/tta_optimization_v2/
+
